@@ -129,7 +129,8 @@ cpr_train %>%
   geom_density() +
   ggtitle("Age Distribution by Religion") + 
   xlab("Age") + 
-  ylab("Count of Women") 
+  ylab("Count of Women") +
+  theme(legend.position = "top")
 
 
 ## ----fig.cap= "Distribution of Age by Contraceptive method "---------------------------
@@ -157,16 +158,18 @@ cpr_train %>%
   geom_density() +
   ggtitle("Distribution of no. of children by Religion") + 
   xlab("No.of Children") + 
-  ylab("Density") 
+  ylab("Density") +
+  theme(legend.position = "top")
 
 
 ## ----fig.cap="Distribution of no. of children by job status"---------------------------
 cpr_train %>% 
   ggplot(aes(n_children, col = Currently_working)) + 
   geom_density() +
-  ggtitle("Distribution of no. of children vs working status") + 
+  ggtitle("No. of children vs working status") + 
   xlab("No. of Children") + 
-  ylab("Density") 
+  ylab("Density") + 
+  theme(legend.position = "top")
 
 
 ## ----fig.cap="Distribution of no. of children by Media Exposure"-----------------------
@@ -175,25 +178,29 @@ cpr_train %>%
   geom_density() +
   ggtitle("Distribution of no. of children by Media Exposure") + 
   xlab("No. of Children ") + 
-  ylab("Density") 
+  ylab("Density") +
+  theme(legend.position = "top")
 
 
-## ----fig.cap= "Distribution of no. of children by Education level"---------------------
+## ----fig.cap= "Distribution of no. of children by Education level", fig.show='hold', out.width="50%"----
+
+# distribution by education level
 cpr_train %>% 
   ggplot(aes(n_children, col = Education)) + 
   geom_density() +
-  ggtitle("Distribution of no. of children by Education level") + 
+  ggtitle("Distribution of no. of children by Wife's Education level") + 
   xlab("No. of Children") + 
-  ylab("Density") 
+  ylab("Density") + 
+  theme(legend.position = "top")
 
-
-## ----fig.cap="Distribution of no. of children of women by Husband's Education level"----
+# distribution by partner's education level
 cpr_train %>% 
   ggplot(aes(n_children, col = Partner_Education)) + 
   geom_density() +
   ggtitle("Distribution of no. of children by Husband's Education level") + 
   xlab("No. of Children") + 
-  ylab("Density") 
+  ylab("Density") + 
+  theme(legend.position = "top")
 
 
 ## ----fig.cap="No. of children by standard of living"-----------------------------------
@@ -449,10 +456,11 @@ results_table <- bind_rows(results_table,
 
 
 ## ---- result---------------------------------------------------------------------------
-knitr::kable(results_table, caption="RMSE Results") %>%  kable_styling(bootstrap_options = c("striped", "hover","condensed"))
+knitr::kable(results_table, caption="RMSE Results") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover","condensed"))
 
 #Investigate the final model
-#$ Check the variable importance
+## Check the variable importance
 varImp(fit_final)
 
 ## plot the final model

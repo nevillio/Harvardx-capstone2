@@ -232,7 +232,8 @@ cpr_train %>%
   geom_density() +
   ggtitle("Age Distribution by Religion") + 
   xlab("Age") + 
-  ylab("Count of Women") 
+  ylab("Count of Women") +
+  theme(legend.position = "top")
 ```
 From the above plot we infer that Muslim women are married off earlier than women of other religion.
     
@@ -277,7 +278,7 @@ We see that Non-muslim women tend to have less number of  children than Muslim w
 cpr_train %>% 
   ggplot(aes(n_children, col = Currently_working)) + 
   geom_density() +
-  ggtitle("Distribution of no. of children vs working status") + 
+  ggtitle("No. of children vs working status") + 
   xlab("No. of Children") + 
   ylab("Density") + 
   theme(legend.position = "top")
@@ -296,11 +297,12 @@ cpr_train %>%
 The media clearly creates awareness about population control.
 
 ```{r fig.cap= "Distribution of no. of children by Education level", fig.show='hold', out.width="50%"}
+
 # distribution by education level
 cpr_train %>% 
   ggplot(aes(n_children, col = Education)) + 
   geom_density() +
-  ggtitle("Distribution of no. of children by Education level") + 
+  ggtitle("Distribution of no. of children by Wife's Education level") + 
   xlab("No. of Children") + 
   ylab("Density") + 
   theme(legend.position = "top")
