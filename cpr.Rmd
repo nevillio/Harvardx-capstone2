@@ -96,7 +96,7 @@ options(timeout=10000, digits=3)
 
 ```{r Downloading file,}
 # Download and import dataset 
-urlfile<-"https://raw.githubusercontent.com/nevilabrahamelias/Harvardx-capstone2-cpr/main/cpr.csv"
+urlfile<-"https://raw.githubusercontent.com/nevillio/Harvardx-capstone2/main/cpr_dataset.csv"
 cpr<-read_csv(urlfile,col_types = cols())
 ```
 ```{r,echo=FALSE}
@@ -175,8 +175,9 @@ str(cpr)
 rm(swap)
 ```
 ### Splitting data
-    The dataset is split into a training set containing 70% of data and test set containing 30% data, called cpr_train and cpr_test respectively. The cpr_train dataset will be used to explore the dataset and train our models. The cpr_test dataset acts as the final hold-out test set (data not seen by the model) to evaluate the model’s performance. 
-    The reason for a 70-30 split is the small size of data. As the size of the training set becomes smaller, it is subjected to large variations in prediction accuracy for relatively small changes. Hence a size ratio closer to 2:1 is selected.
+|    The dataset is split into a training set containing 70% of data and test set containing 30% data, called cpr_train and cpr_test respectively. The cpr_train dataset will be used to explore the dataset and train our models. The cpr_test dataset acts as the final hold-out test set (data not seen by the model) to evaluate the model’s performance. 
+
+|    The reason for a 70-30 split is the small size of data. As the size of the training set becomes smaller, it is subjected to large variations in prediction accuracy for relatively small changes. Hence a size ratio closer to 2:1 is selected.
     The following code achieves the splitting of data:
 
 ```{r Splitting Data}
@@ -267,7 +268,8 @@ cpr_train %>%
   geom_density() +
   ggtitle("Distribution of no. of children by Religion") + 
   xlab("No.of Children") + 
-  ylab("Density") 
+  ylab("Density") +
+  theme(legend.position = "top")
 ```
 We see that Non-muslim women tend to have less number of  children than Muslim women on average.
 
@@ -277,7 +279,8 @@ cpr_train %>%
   geom_density() +
   ggtitle("Distribution of no. of children vs working status") + 
   xlab("No. of Children") + 
-  ylab("Density") 
+  ylab("Density") + 
+  theme(legend.position = "top")
 ```
 The difference is less significant compared to the previous one.    
 
@@ -287,27 +290,29 @@ cpr_train %>%
   geom_density() +
   ggtitle("Distribution of no. of children by Media Exposure") + 
   xlab("No. of Children ") + 
-  ylab("Density") 
+  ylab("Density") +
+  theme(legend.position = "top")
 ```
 The media clearly creates awareness about population control.
 
-```{r fig.cap= "Distribution of no. of children by Education level"}
+```{r fig.cap= "Distribution of no. of children by Education level", fig.show='hold', out.width="50%"}
+# distribution by education level
 cpr_train %>% 
   ggplot(aes(n_children, col = Education)) + 
   geom_density() +
   ggtitle("Distribution of no. of children by Education level") + 
   xlab("No. of Children") + 
-  ylab("Density") 
-```
+  ylab("Density") + 
+  theme(legend.position = "top")
 
-
-```{r fig.cap="Distribution of no. of children of women by Husband's Education level"}
+# distribution by partner's education level
 cpr_train %>% 
   ggplot(aes(n_children, col = Partner_Education)) + 
   geom_density() +
   ggtitle("Distribution of no. of children by Husband's Education level") + 
   xlab("No. of Children") + 
-  ylab("Density") 
+  ylab("Density") + 
+  theme(legend.position = "top")
 ```
 
 |   With increased education level couples participate more in population control.
@@ -384,7 +389,7 @@ cpr_train %>%
   theme_economist_white()
 ```
 
-|    With increased education level, couples tend to use contraceptives. As expected, most people using long term contraceptives have the highest education level.
+|    With increased education level, couples tend to use contraceptives more. 
     
 ```{r fig.cap= "Contraceptive Method by Partner's Education Level"}
 cpr_train %>% 
@@ -397,7 +402,7 @@ cpr_train %>%
     theme_economist_white()      
 ```
 
-|    Interestingly enough the husband's education level does not necessarily mean use of contraceptives, but again people using long-term contraceptives tend to be the highest level. This maybe because of the high cost of long term methods.
+|    Interestingly enough the husband's education level does not necessarily mean increased use of contraceptives, but again people using long-term contraceptives tend to be the highest level. This maybe because of the high cost of long term methods.
 
 ```{r fig.cap= "Contraceptive Method by Religion"}
 cpr_train %>% 
@@ -413,7 +418,7 @@ cpr_train %>%
     theme_economist_white()
 ```    
 
-|    We see that Muslim couples are comparitively less likely to use contraceptives
+|    We see that Muslim couples are comparatively less likely to use contraceptives
     
 ```{r fig.cap= "Contraceptive Method by Working Status"}
 cpr_train %>% 
@@ -471,7 +476,7 @@ cpr_train %>%
     theme_economist_white()
 ```    
 
-|Though the number of people without media exposure is quite small we observe a positive correlation. 
+|   Though the number of people without media exposure is quite small we observe a positive correlation. 
     
 |    We've seen that all the variables can be used as predictors. Now we are ready to develop our predicting models.
 
@@ -502,7 +507,7 @@ trControl <- trainControl(method = "repeatedcv",
 |    Simply Logistic Regression is used only when there are two categories in the target variable. When there are more than two variables, we use:
 1. Multinomial Logistic Regression when the categories have no intrinsic order.
 2. Ordinal Logistic Regression when the categories are ordered.  
-|    Both methods essentially estimates separate binary logistic regression model for each variable.[^3]
+Both methods essentially estimates separate binary logistic regression model for each variable.[^3]
     
 |    From our exploration we know that the target variable has a definite order (descending from "None" to "Long Term"). Hence we will use the Ordinal Logistic Regression Method.
     
@@ -632,15 +637,16 @@ results_table <- bind_rows(results_table,
                                   Accuracy = accuracy))
 ```
 
-|   The decision tree model performs well with the test data.Hence we can be confident that it well with new data. Now, we'll move to the results and discussion.
+|   The decision tree model performs well with the test data. Hence we can be confident that it well with new data. Now, we'll move to the results and discussion.
 
 ## Result
 
 ```{r, result}
-knitr::kable(results_table, caption="RMSE Results") %>%  kable_styling(bootstrap_options = c("striped", "hover","condensed"))
+knitr::kable(results_table, caption="RMSE Results") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover","condensed"))
 
 #Investigate the final model
-#$ Check the variable importance
+## Check the variable importance
 varImp(fit_final)
 
 ## plot the final model
@@ -661,7 +667,7 @@ text(fit_final$finalModel)
 
 |   Private firms that sell contraceptives can actively advertise their product through media to the youth population to create more awareness. The older women who can't afford long term methods can also be encouraged to use short term contraceptives.
 
-## Limitations
+# Limitations
 |   The limitations of this project include:  
 1. The dataset used is from 1987 and women are now more educated.
 2. Only limited information is  available. Cost of contraceptive methods, average income etc are not available and could have been very useful. 
