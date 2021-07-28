@@ -31,7 +31,7 @@ options(timeout=10000, digits=3)
 
 ## ----Downloading file------------------------------------------------------------------
 # Download and import dataset 
-urlfile<-"https://raw.githubusercontent.com/nevilabrahamelias/Harvardx-capstone2-cpr/main/cpr.csv"
+urlfile<-"https://raw.githubusercontent.com/nevillio/Harvardx-capstone2/main/cpr_dataset.csv"
 cpr<-read_csv(urlfile,col_types = cols())
 
 ## ----echo=FALSE------------------------------------------------------------------------
